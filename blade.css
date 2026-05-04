@@ -285,6 +285,27 @@
     font-weight: 300;
   }
 
+  .section-media {
+    text-align: center;
+    margin: 3rem 0 4rem;
+  }
+
+  .section-media img {
+    width: 100%;
+    max-width: 320px;
+    border-radius: 1rem;
+    border: 1px solid var(--divider);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.08);
+    display: inline-block;
+  }
+
+  .section-image--no-frame {
+    border: none !important;
+    box-shadow: none !important;
+    background: transparent !important;
+    border-radius: 0 !important;
+  }
+
   /* HORIZONTAL RULE */
   hr.brush {
     border: none;
