@@ -1,0 +1,1068 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Samurai Hub — Chronicles of the Blade</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@200;300;400;700&family=Cinzel:wght@400;600;700&family=Noto+Sans+JP:wght@200;300;400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --void: #0a0908;
+  --deep: #111009;
+  --surface: #161410;
+  --surface2: #1e1b16;
+  --border: rgba(255,255,255,0.07);
+  --border-hover: rgba(255,255,255,0.14);
+  --paper: #f5f0e8;
+  --paper-dim: rgba(245,240,232,0.55);
+  --paper-faint: rgba(245,240,232,0.12);
+  --red: #9b2020;
+  --red-bright: #c0392b;
+  --red-glow: rgba(155,32,32,0.35);
+  --gold: #b8922a;
+  --gold-dim: rgba(184,146,42,0.4);
+  --ash: rgba(245,240,232,0.38);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Noto Serif JP', serif;
+  background: var(--void);
+  color: var(--paper);
+  overflow-x: hidden;
+  cursor: default;
+}
+
+/* CUSTOM CURSOR */
+* { cursor: default; }
+a, .samurai-card { cursor: pointer; }
+
+/* NOISE OVERLAY */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.6;
+}
+
+/* NAV */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 3.5rem;
+  height: 60px;
+  background: rgba(10,9,8,0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  text-decoration: none;
+}
+
+.nav-logo-kanji {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 1.2rem;
+  color: var(--red-bright);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+
+.nav-logo-text {
+  font-family: 'Cinzel', serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--paper-dim);
+  font-weight: 400;
+}
+
+.nav-right {
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 0.65rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--ash);
+}
+
+/* HERO */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  padding: 0 2rem;
+}
+
+/* Brush stroke BG */
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.hero-kanji-bg {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 55vw;
+  font-weight: 700;
+  color: rgba(255,255,255,0.018);
+  line-height: 1;
+  user-select: none;
+  white-space: nowrap;
+}
+
+/* Vertical red line left */
+.hero::before {
+  content: '';
+  position: absolute;
+  left: 12%;
+  top: 15%;
+  bottom: 15%;
+  width: 1px;
+  background: linear-gradient(to bottom, transparent, var(--red) 30%, var(--red) 70%, transparent);
+  opacity: 0.5;
+}
+
+.hero::after {
+  content: '';
+  position: absolute;
+  right: 12%;
+  top: 25%;
+  bottom: 25%;
+  width: 1px;
+  background: linear-gradient(to bottom, transparent, rgba(245,240,232,0.06) 50%, transparent);
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  animation: heroIn 1.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes heroIn {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.hero-eyebrow {
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 0.62rem;
+  letter-spacing: 0.45em;
+  text-transform: uppercase;
+  color: var(--red-bright);
+  margin-bottom: 2rem;
+  display: block;
+  animation: heroIn 1.4s 0.1s cubic-bezier(0.16,1,0.3,1) both;
+}
+
+.hero-title-kanji {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(3rem, 10vw, 8rem);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.3em;
+  color: var(--paper);
+  display: block;
+  margin-bottom: 0.6rem;
+  animation: heroIn 1.4s 0.2s cubic-bezier(0.16,1,0.3,1) both;
+}
+
+.hero-title-en {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(1.2rem, 3vw, 2.2rem);
+  font-weight: 400;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--paper-dim);
+  display: block;
+  margin-bottom: 2.5rem;
+  animation: heroIn 1.4s 0.3s cubic-bezier(0.16,1,0.3,1) both;
+}
+
+.hero-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.2rem;
+  margin-bottom: 2rem;
+  animation: heroIn 1.4s 0.4s cubic-bezier(0.16,1,0.3,1) both;
+}
+
+.hero-divider-line {
+  width: 80px;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--red));
+}
+
+.hero-divider-line.r {
+  background: linear-gradient(to left, transparent, var(--red));
+}
+
+.hero-divider-mark {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.8rem;
+  color: var(--red-bright);
+}
+
+.hero-desc {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 1rem;
+  font-weight: 300;
+  color: var(--ash);
+  max-width: 500px;
+  margin: 0 auto 3rem;
+  line-height: 2;
+  font-style: italic;
+  animation: heroIn 1.4s 0.45s cubic-bezier(0.16,1,0.3,1) both;
+}
+
+.hero-scroll-cue {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  animation: heroIn 1.4s 0.6s cubic-bezier(0.16,1,0.3,1) both;
+  text-decoration: none;
+}
+
+.hero-scroll-cue span {
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 0.58rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--ash);
+}
+
+.scroll-bar {
+  width: 1px;
+  height: 52px;
+  background: linear-gradient(to bottom, var(--red-bright), transparent);
+  animation: scrollPulse 2s ease-in-out infinite;
+}
+
+@keyframes scrollPulse {
+  0%,100% { opacity: 0.4; transform: scaleY(1); }
+  50% { opacity: 1; transform: scaleY(1.1); }
+}
+
+/* INTRO BAND */
+.intro-band {
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 3.5rem 4rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 3rem;
+  flex-wrap: wrap;
+}
+
+.intro-stat {
+  text-align: center;
+  flex: 1;
+  min-width: 120px;
+}
+
+.intro-stat-num {
+  font-family: 'Cinzel', serif;
+  font-size: 2.2rem;
+  font-weight: 600;
+  color: var(--paper);
+  display: block;
+  line-height: 1;
+  margin-bottom: 0.4rem;
+}
+
+.intro-stat-label {
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ash);
+}
+
+.intro-divider {
+  width: 1px;
+  height: 48px;
+  background: var(--border);
+  flex-shrink: 0;
+}
+
+/* LEGENDS SECTION */
+.legends-section {
+  padding: 7rem 3.5rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.legends-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 4rem;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.legends-header-left {}
+
+.section-tag {
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 0.6rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--red-bright);
+  display: block;
+  margin-bottom: 0.6rem;
+}
+
+.section-title {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(1.6rem, 3vw, 2.4rem);
+  font-weight: 600;
+  color: var(--paper);
+  line-height: 1.2;
+  letter-spacing: 0.05em;
+}
+
+.section-title em {
+  font-style: italic;
+  color: var(--ash);
+  font-weight: 400;
+}
+
+.legends-header-note {
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 0.7rem;
+  color: var(--ash);
+  letter-spacing: 0.08em;
+  line-height: 1.8;
+  max-width: 300px;
+  text-align: right;
+}
+
+/* CARD GRID */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+}
+
+/* SAMURAI CARD */
+.samurai-card {
+  position: relative;
+  background: var(--deep);
+  padding: 0;
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  min-height: 380px;
+  transition: background 0.3s;
+}
+
+.samurai-card.available:hover { background: var(--surface2); }
+
+.samurai-card.coming-soon {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* Card background kanji */
+.card-bg-kanji {
+  position: absolute;
+  bottom: -1rem;
+  right: -0.5rem;
+  font-family: 'Noto Serif JP', serif;
+  font-size: 9rem;
+  font-weight: 700;
+  color: rgba(255,255,255,0.03);
+  line-height: 1;
+  pointer-events: none;
+  user-select: none;
+  transition: transform 0.5s cubic-bezier(0.16,1,0.3,1), opacity 0.3s;
+}
+
+.samurai-card.available:hover .card-bg-kanji {
+  transform: scale(1.08) translate(-4px, -6px);
+  opacity: 1;
+  color: rgba(255,255,255,0.05);
+}
+
+/* Red accent line on hover */
+.card-accent {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--red);
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 0.35s cubic-bezier(0.16,1,0.3,1);
+}
+
+.samurai-card.available:hover .card-accent { transform: scaleY(1); }
+
+.card-inner {
+  padding: 2.2rem 2.2rem 1.8rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  position: relative;
+  z-index: 1;
+}
+
+/* Top meta row */
+.card-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+}
+
+.card-era {
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  color: var(--ash);
+  text-transform: uppercase;
+}
+
+.card-badge {
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 0.55rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 0.25rem 0.6rem;
+  border: 1px solid var(--red);
+  color: var(--red-bright);
+}
+
+.card-badge.coming {
+  border-color: var(--border-hover);
+  color: var(--ash);
+}
+
+/* Name block */
+.card-name-jp {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.95rem;
+  font-weight: 300;
+  color: var(--ash);
+  letter-spacing: 0.2em;
+  margin-bottom: 0.3rem;
+  display: block;
+}
+
+.card-name-en {
+  font-family: 'Cinzel', serif;
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: var(--paper);
+  line-height: 1.2;
+  letter-spacing: 0.04em;
+  margin-bottom: 0.2rem;
+  display: block;
+}
+
+.card-dates {
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 0.62rem;
+  color: var(--ash);
+  letter-spacing: 0.15em;
+  display: block;
+  margin-bottom: 1.4rem;
+}
+
+/* Tag pills */
+.card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 1.4rem;
+}
+
+.card-tag {
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 0.58rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.2rem 0.55rem;
+  border: 1px solid var(--border);
+  color: var(--ash);
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.samurai-card.available:hover .card-tag {
+  border-color: var(--border-hover);
+  color: var(--paper-dim);
+}
+
+/* Description */
+.card-desc {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.88rem;
+  font-weight: 300;
+  color: rgba(245,240,232,0.45);
+  line-height: 1.85;
+  flex: 1;
+  transition: color 0.3s;
+}
+
+.samurai-card.available:hover .card-desc {
+  color: rgba(245,240,232,0.65);
+}
+
+/* Card footer */
+.card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 1.4rem;
+  border-top: 1px solid var(--border);
+  margin-top: 1.4rem;
+}
+
+.card-school {
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  color: var(--ash);
+}
+
+.card-school strong {
+  display: block;
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.78rem;
+  font-weight: 400;
+  color: var(--paper-dim);
+  margin-top: 0.15rem;
+  letter-spacing: 0.05em;
+}
+
+.card-arrow {
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  color: var(--ash);
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+  flex-shrink: 0;
+}
+
+.samurai-card.available:hover .card-arrow {
+  border-color: var(--red);
+  color: var(--red-bright);
+  background: rgba(155,32,32,0.1);
+}
+
+/* FEATURED CARD (Musashi — wider) */
+.samurai-card.featured {
+  grid-column: span 2;
+}
+
+@media (max-width: 700px) {
+  .samurai-card.featured { grid-column: span 1; }
+}
+
+.featured .card-name-en { font-size: 2rem; }
+.featured .card-bg-kanji { font-size: 14rem; }
+
+.featured .card-desc {
+  max-width: 560px;
+  font-size: 0.92rem;
+}
+
+/* COMING SOON SECTION */
+.upcoming-section {
+  padding: 5rem 3.5rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  border-top: 1px solid var(--border);
+}
+
+.upcoming-title {
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 0.62rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--ash);
+  margin-bottom: 2rem;
+  display: block;
+}
+
+.upcoming-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0;
+  border: 1px solid var(--border);
+}
+
+.upcoming-item {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  padding: 1.1rem 1.8rem;
+  border-right: 1px solid var(--border);
+  min-width: 200px;
+}
+
+.upcoming-item:last-child { border-right: none; }
+
+.upcoming-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--border-hover);
+  flex-shrink: 0;
+}
+
+.upcoming-name {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.88rem;
+  color: var(--ash);
+  font-weight: 300;
+}
+
+.upcoming-status {
+  margin-left: auto;
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 0.55rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(245,240,232,0.2);
+}
+
+/* QUOTE BAND */
+.quote-band {
+  padding: 6rem 4rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.quote-band::before {
+  content: '道';
+  position: absolute;
+  font-family: 'Noto Serif JP', serif;
+  font-size: 40vw;
+  font-weight: 700;
+  color: rgba(255,255,255,0.015);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.quote-text {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(1rem, 2.2vw, 1.4rem);
+  font-style: italic;
+  font-weight: 300;
+  color: var(--paper-dim);
+  max-width: 700px;
+  margin: 0 auto 1.2rem;
+  line-height: 2;
+  position: relative;
+}
+
+.quote-attr {
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 0.62rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--red-bright);
+  position: relative;
+}
+
+/* FOOTER */
+footer {
+  padding: 3rem 3.5rem;
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.footer-logo {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 1.5rem;
+  color: rgba(255,255,255,0.06);
+  letter-spacing: 0.3em;
+}
+
+.footer-note {
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 0.6rem;
+  letter-spacing: 0.15em;
+  color: rgba(245,240,232,0.2);
+  text-align: right;
+}
+
+/* ANIMATIONS */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (max-width: 900px) {
+  nav { padding: 0 1.5rem; }
+  .intro-band { padding: 2.5rem 2rem; gap: 1.5rem; }
+  .legends-section, .upcoming-section { padding: 5rem 1.5rem; }
+  .quote-band { padding: 4rem 2rem; }
+  footer { padding: 2.5rem 1.5rem; }
+}
+
+@media (max-width: 600px) {
+  .intro-divider { display: none; }
+  .upcoming-item { border-right: none; border-bottom: 1px solid var(--border); width: 100%; }
+  .upcoming-item:last-child { border-bottom: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-logo">
+    <span class="nav-logo-kanji">侍</span>
+    <span class="nav-logo-text">Samurai Hub</span>
+  </a>
+  <span class="nav-right">Chronicles of the Blade</span>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-bg">
+    <span class="hero-kanji-bg">侍</span>
+  </div>
+  <div class="hero-content">
+    <span class="hero-eyebrow">Japan · Feudal Era · Legendary Duelists</span>
+    <span class="hero-title-kanji">侍</span>
+    <span class="hero-title-en">Samurai Hub</span>
+    <div class="hero-divider">
+      <div class="hero-divider-line"></div>
+      <span class="hero-divider-mark">剣</span>
+      <div class="hero-divider-line r"></div>
+    </div>
+    <p class="hero-desc">Chronicles of Japan's greatest swordsmen the real histories, the legendary novels, and the iconic manga that immortalised them.</p>
+    <a href="#legends" class="hero-scroll-cue">
+      <span>Enter</span>
+      <div class="scroll-bar"></div>
+    </a>
+  </div>
+</div>
+
+<!-- INTRO STATS BAND -->
+<div class="intro-band">
+  <div class="intro-stat">
+    <span class="intro-stat-num">6</span>
+    <span class="intro-stat-label">Legends Covered</span>
+  </div>
+  <div class="intro-divider"></div>
+  <div class="intro-stat">
+    <span class="intro-stat-num">~400</span>
+    <span class="intro-stat-label">Years of History</span>
+  </div>
+  <div class="intro-divider"></div>
+  <div class="intro-stat">
+    <span class="intro-stat-num">戦国</span>
+    <span class="intro-stat-label">Sengoku to Edo</span>
+  </div>
+  <div class="intro-divider"></div>
+  <div class="intro-stat">
+    <span class="intro-stat-num">∞</span>
+    <span class="intro-stat-label">Duels Recorded</span>
+  </div>
+</div>
+
+<!-- LEGENDS GRID -->
+<section class="legends-section" id="legends">
+  <div class="legends-header reveal">
+    <div class="legends-header-left">
+      <span class="section-tag">The Legends</span>
+      <h2 class="section-title">Masters of the <em>Way</em></h2>
+    </div>
+    <p class="legends-header-note">Each chapter covers the real historical figure, their major works in literature, and their manga adaptations.</p>
+  </div>
+
+  <div class="card-grid">
+
+    <!-- MUSASHI — FEATURED -->
+    <a href="musashi.html" class="samurai-card available featured reveal">
+      <div class="card-accent"></div>
+      <div class="card-bg-kanji">武</div>
+      <div class="card-inner">
+        <div class="card-meta">
+          <span class="card-era">c. 1584 - 1645</span>
+          <span class="card-badge">Available</span>
+        </div>
+        <span class="card-name-jp">宮本武蔵</span>
+        <span class="card-name-en">Miyamoto Musashi</span>
+        <span class="card-dates">Harima Province · 60 Duels Undefeated</span>
+        <div class="card-tags">
+          <span class="card-tag">Niten Ichi-ryū</span>
+          <span class="card-tag">Gorin no Sho</span>
+          <span class="card-tag">Yoshikawa Novel</span>
+          <span class="card-tag">Vagabond Manga</span>
+        </div>
+        <p class="card-desc">Japan's most celebrated swordsman the two-sword master who never lost a duel, wrote The Book of Five Rings, and inspired centuries of storytelling. His journey from violent youth to philosophical warrior remains one of history's great transformations.</p>
+        <div class="card-footer">
+          <div class="card-school">
+            <span>School of Swordsmanship</span>
+            <strong>Niten Ichi-ryū</strong>
+          </div>
+          <div class="card-arrow">→</div>
+        </div>
+      </div>
+    </a>
+
+    <!-- ITO ITTOSAI -->
+    <div class="samurai-card coming-soon reveal">
+      <div class="card-accent"></div>
+      <div class="card-bg-kanji">刀</div>
+      <div class="card-inner">
+        <div class="card-meta">
+          <span class="card-era">c. 1560 - 1653</span>
+          <span class="card-badge coming">Coming Soon</span>
+        </div>
+        <span class="card-name-jp">伊藤一刀斎</span>
+        <span class="card-name-en">Itō Ittōsai</span>
+        <span class="card-dates">Izu Province · Founder of Ittō-ryū</span>
+        <div class="card-tags">
+          <span class="card-tag">Ittō-ryū</span>
+          <span class="card-tag">Single Sword</span>
+          <span class="card-tag">Mystery</span>
+        </div>
+        <p class="card-desc">A near-mythical figure who founded the most influential school of Japanese swordsmanship — Ittō-ryū. Said to have won over 33 duels. His origins are obscure, his disappearance unexplained. He trained masters who would shape the sword arts for generations.</p>
+        <div class="card-footer">
+          <div class="card-school">
+            <span>School of Swordsmanship</span>
+            <strong>Ittō-ryū</strong>
+          </div>
+          <div class="card-arrow">→</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TSUKAHARA BOKUDEN -->
+    <div class="samurai-card coming-soon reveal">
+      <div class="card-accent"></div>
+      <div class="card-bg-kanji">卜</div>
+      <div class="card-inner">
+        <div class="card-meta">
+          <span class="card-era">1489 - 1571</span>
+          <span class="card-badge coming">Coming Soon</span>
+        </div>
+        <span class="card-name-jp">塚原卜伝</span>
+        <span class="card-name-en">Tsukahara Bokuden</span>
+        <span class="card-dates">Hitachi Province · 19 Duels, 37 Battles</span>
+        <div class="card-tags">
+          <span class="card-tag">Kashima Shintō-ryū</span>
+          <span class="card-tag">Mutekatsu</span>
+          <span class="card-tag">Three Shoguns</span>
+        </div>
+        <p class="card-desc">Survived 19 individual duels, 37 battles, and was wounded only six times — always by arrows, never by a sword. He tutored three shoguns and famously taught a vain student "the ultimate secret of the sword" by crossing a river without drawing his blade.</p>
+        <div class="card-footer">
+          <div class="card-school">
+            <span>School of Swordsmanship</span>
+            <strong>Kashima Shintō-ryū</strong>
+          </div>
+          <div class="card-arrow">→</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- KAMIIZUMI NOBUTSUNA -->
+    <div class="samurai-card coming-soon reveal">
+      <div class="card-accent"></div>
+      <div class="card-bg-kanji">神</div>
+      <div class="card-inner">
+        <div class="card-meta">
+          <span class="card-era">1508 - 1577</span>
+          <span class="card-badge coming">Coming Soon</span>
+        </div>
+        <span class="card-name-jp">上泉信綱</span>
+        <span class="card-name-en">Kamiizumi Nobutsuna</span>
+        <span class="card-dates">Kōzuke Province · Father of Shinkage-ryū</span>
+        <div class="card-tags">
+          <span class="card-tag">Shinkage-ryū</span>
+          <span class="card-tag">Fukuro Shinai</span>
+          <span class="card-tag">Hosokawa Court</span>
+        </div>
+        <p class="card-desc">Called "the sword saint" by his contemporaries. Founder of Shinkage-ryū — one of the three great foundations of Japanese sword arts. He developed the fukuro shinai (practice sword) for safer sparring and mastered the concept of mushin, swordless swordsmanship.</p>
+        <div class="card-footer">
+          <div class="card-school">
+            <span>School of Swordsmanship</span>
+            <strong>Shinkage-ryū</strong>
+          </div>
+          <div class="card-arrow">→</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- YAGYU MUNETOSHI -->
+    <a href="yagyu.html" class="samurai-card available reveal">
+      <div class="card-accent"></div>
+      <div class="card-bg-kanji">柳</div>
+      <div class="card-inner">
+        <div class="card-meta">
+          <span class="card-era">1527 — 1606</span>
+          <span class="card-badge">Available</span>
+        </div>
+        <span class="card-name-jp">柳生宗厳</span>
+        <span class="card-name-en">Yagyū School</span>
+        <span class="card-dates">Yamato Province · Shogunal Instructor · Most Famous School</span>
+        <div class="card-tags">
+          <span class="card-tag">Yagyū Shinkage-ryū</span>
+          <span class="card-tag">Tokugawa</span>
+          <span class="card-tag">No-Sword</span>
+        </div>
+        <p class="card-desc">The sword school that rose from obscurity to become the official art of the Tokugawa shogunate. Across generations, the Yagyū refined Shinkage-ryū into a philosophy of control, restraint, and the life-giving sword where mastery meant winning without killing.</p>
+        <div class="card-footer">
+          <div class="card-school">
+            <span>School of Swordsmanship</span>
+            <strong>Yagyū Shinkage-ryū</strong>
+          </div>
+          <div class="card-arrow">→</div>
+        </div>
+      </div>
+    </a>
+
+    <!-- 47 RONIN -->
+    <div class="samurai-card coming-soon reveal">
+      <div class="card-accent"></div>
+      <div class="card-bg-kanji">浪</div>
+      <div class="card-inner">
+        <div class="card-meta">
+          <span class="card-era">1701 - 1703</span>
+          <span class="card-badge coming">Coming Soon</span>
+        </div>
+        <span class="card-name-jp">四十七士</span>
+        <span class="card-name-en">The 47 Rōnin</span>
+        <span class="card-dates">Edo Period · The Akō Incident</span>
+        <div class="card-tags">
+          <span class="card-tag">Bushidō</span>
+          <span class="card-tag">Giri & Chūgi</span>
+          <span class="card-tag">Chūshingura</span>
+        </div>
+        <p class="card-desc">Not one man, but forty-seven — masterless samurai who waited nearly two years to avenge the death of their lord Asano Naganori. Their story is Japan's defining tale of loyalty, sacrifice, and the bushidō code. Immortalised in Kabuki, novels, films, and manga worldwide.</p>
+        <div class="card-footer">
+          <div class="card-school">
+            <span>Clan</span>
+            <strong>Akō Domain</strong>
+          </div>
+          <div class="card-arrow">→</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- UPCOMING -->
+<section class="upcoming-section">
+  <span class="upcoming-title reveal">Also Planned — Future Entries</span>
+  <div class="upcoming-list reveal">
+    <div class="upcoming-item">
+      <div class="upcoming-dot"></div>
+      <span class="upcoming-name">Sasaki Kojirō</span>
+      <span class="upcoming-status">Planned</span>
+    </div>
+    <div class="upcoming-item">
+      <div class="upcoming-dot"></div>
+      <span class="upcoming-name">Yagyū Jūbei</span>
+      <span class="upcoming-status">Planned</span>
+    </div>
+    <div class="upcoming-item">
+      <div class="upcoming-dot"></div>
+      <span class="upcoming-name">Okita Sōji</span>
+      <span class="upcoming-status">Planned</span>
+    </div>
+    <div class="upcoming-item">
+      <div class="upcoming-dot"></div>
+      <span class="upcoming-name">Araki Mataemon</span>
+      <span class="upcoming-status">Planned</span>
+    </div>
+    <div class="upcoming-item">
+      <div class="upcoming-dot"></div>
+      <span class="upcoming-name">Toda Seigen</span>
+      <span class="upcoming-status">Planned</span>
+    </div>
+  </div>
+</section>
+
+<!-- QUOTE BAND -->
+<div class="quote-band">
+  <p class="quote-text">"There is no teacher but the enemy. No one but the adversary will tell you where you are weak, where you are strong."</p>
+  <p class="quote-attr">Miyamoto Musashi — The Book of Five Rings</p>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-logo">侍 道 剣</span>
+  <div class="footer-note">
+    Samurai Hub · A historical reference project<br>
+    Covering Japan's greatest swordsmen across history, literature & manga
+  </div>
+</footer>
+
+<script>
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const revealObs = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 60);
+        revealObs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.08 });
+  reveals.forEach(r => revealObs.observe(r));
+
+  // Stagger card reveals in grid
+  document.querySelectorAll('.samurai-card').forEach((card, i) => {
+    card.style.transitionDelay = `${i * 0.07}s`;
+  });
+</script>
+</body>
+</html>

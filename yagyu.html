@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Yagyū Clan  Swords of the Shogunate</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Noto+Sans+JP:wght@300;400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="blade.css">
+<style>
+  /* Per-page overrides */
+  .wide-quote::before { content: '柳'; }
+  hr.brush::before { content: '影'; }
+
+  /* Generation flow  unique to this page */
+  .lineage-flow {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    margin: 4rem 0;
+    border: 1px solid var(--divider);
+    overflow-x: auto;
+  }
+
+  .lineage-node {
+    flex: 1;
+    min-width: 200px;
+    padding: 2rem 1.8rem;
+    border-right: 1px solid var(--divider);
+    position: relative;
+    transition: background 0.2s;
+  }
+
+  .lineage-node:last-child { border-right: none; }
+  .lineage-node:hover { background: var(--paper-warm); }
+
+  .lineage-gen {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 0.58rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ash);
+    display: block;
+    margin-bottom: 0.6rem;
+  }
+
+  .lineage-kanji {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 2.2rem;
+    color: var(--red);
+    display: block;
+    margin-bottom: 0.4rem;
+    line-height: 1;
+  }
+
+  .lineage-name {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--ink);
+    display: block;
+    margin-bottom: 0.2rem;
+  }
+
+  .lineage-dates {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 0.6rem;
+    color: var(--ash);
+    letter-spacing: 0.12em;
+    display: block;
+    margin-bottom: 0.8rem;
+  }
+
+  .lineage-desc {
+    font-size: 0.82rem;
+    color: var(--ash);
+    line-height: 1.7;
+  }
+
+  .lineage-arrow {
+    position: absolute;
+    right: -12px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 0.8rem;
+    color: var(--red);
+    z-index: 2;
+    background: var(--paper);
+    padding: 0.2rem 0;
+  }
+
+  .lineage-node:last-child .lineage-arrow { display: none; }
+
+  /* Jubei mystery block */
+  .mystery-block {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 3rem 3.5rem;
+    margin: 3rem 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .mystery-block::before {
+    content: '?';
+    position: absolute;
+    right: 2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: 'Noto Serif JP', serif;
+    font-size: 12rem;
+    font-weight: 700;
+    color: rgba(255,255,255,0.03);
+    pointer-events: none;
+    line-height: 1;
+  }
+
+  .mystery-title {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--paper);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+  }
+
+  .mystery-title::before {
+    content: '';
+    display: inline-block;
+    width: 24px;
+    height: 2px;
+    background: var(--red-light);
+    flex-shrink: 0;
+  }
+
+  .mystery-theories {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+  }
+
+  .theory {
+    padding: 1.2rem 1.4rem;
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .theory-label {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 0.58rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--red-light);
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
+  .theory-text {
+    font-size: 0.88rem;
+    color: rgba(245,240,232,0.65);
+    line-height: 1.7;
+  }
+
+  /* Vagabond appearance cards  reuse manga-feature style */
+  .appearance-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 2rem;
+    margin: 3rem 0;
+  }
+
+  .appearance-card {
+    padding: 2rem;
+    border: 1px solid var(--divider);
+    transition: border-color 0.2s;
+  }
+
+  .appearance-card:hover { border-color: rgba(139,26,26,0.3); }
+
+  .appearance-vol {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 0.62rem;
+    letter-spacing: 0.18em;
+    color: var(--red);
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
+  .appearance-title {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 0.7rem;
+  }
+
+  .appearance-desc {
+    font-size: 0.88rem;
+    color: var(--ash);
+    line-height: 1.75;
+  }
+
+  /* Eye patch debate block */
+  .debate-block {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5px;
+    background: var(--divider);
+    border: 1px solid var(--divider);
+    margin: 2.5rem 0;
+  }
+
+  .debate-side {
+    background: var(--paper);
+    padding: 2rem;
+  }
+
+  .debate-label {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 0.62rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ash);
+    display: block;
+    margin-bottom: 0.8rem;
+  }
+
+  .debate-stance {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 0.6rem;
+  }
+
+  .debate-text {
+    font-size: 0.88rem;
+    color: var(--ash);
+    line-height: 1.75;
+  }
+
+  @media (max-width: 700px) {
+    .lineage-flow { flex-direction: column; }
+    .lineage-node { border-right: none; border-bottom: 1px solid var(--divider); }
+    .lineage-node:last-child { border-bottom: none; }
+    .lineage-arrow { display: none; }
+    .debate-block { grid-template-columns: 1fr; }
+    .mystery-theories { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-logo"><span>←</span> Hub</a>
+  <ul class="nav-links">
+    <li><a href="#lineage">The Lineage</a></li>
+    <li><a href="#munetoshi">Munetoshi</a></li>
+    <li><a href="#munenori">Munenori</a></li>
+    <li><a href="#jubei">Jūbei</a></li>
+    <li><a href="#vagabond">Vagabond</a></li>
+    <li><a href="#compare">Compare</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-bg-kanji">柳</div>
+  <div class="hero-vertical-lines">
+    <div class="vline" style="left: 20%;"></div>
+    <div class="vline" style="left: 40%;"></div>
+    <div class="vline" style="left: 60%;"></div>
+    <div class="vline" style="left: 80%;"></div>
+  </div>
+  <div class="hero-content">
+    <span class="hero-eyebrow">Swords of the Tokugawa Shogunate</span>
+    <h1 class="hero-title">
+      The Yagyū Clan
+      <em>四代の剣</em>
+    </h1>
+    <span class="hero-kanji-inline">柳生氏</span>
+    <p class="hero-dates">1527  1650 · Yamato Province</p>
+    <p class="hero-quote">"The techniques of this school are unbeatable  this arises not from the needless taking of life, but from the true courage required to avoid unnecessary conflict."</p>
+    <a href="#lineage" class="hero-scroll">Scroll</a>
+  </div>
+</div>
+
+<!-- LINEAGE OVERVIEW -->
+<section id="lineage">
+  <div class="section-header">
+    <div class="section-number">一</div>
+    <div class="section-header-text">
+      <span class="section-tag">The Historical Record · Four Generations</span>
+      <h2 class="section-title">A Dynasty of the Sword</h2>
+      <p class="section-subtitle">From a minor lord defeated in a duel to the official sword instructors of the Tokugawa shōguns  the Yagyū story spans four extraordinary generations.</p>
+    </div>
+  </div>
+
+  <div class="philosophy-grid">
+    <div class="philosophy-text">
+      <p>The Yagyū were not always great. Before the mid-sixteenth century they were a minor noble family from Yamato Province  small landowners near what is now Nara, fighting for survival in a province constantly contested by larger powers. What transformed them was a single encounter in 1564 that changed the trajectory of the family and, through it, the history of Japanese swordsmanship.</p>
+      <p>Their school  Yagyū Shinkage-ryū  did not originate with them. It was given to them by the wandering sword saint Kamiizumi Nobutsuna, who founded Shinkage-ryū and passed it to the Yagyū patriarch after defeating him in a friendly duel. That defeat, and the humility that followed it, became the founding myth of everything the Yagyū would become.</p>
+      <p>Over four generations the school grew from a rural dojo into the official martial art of Japan's ruling dynasty. The Yagyū taught three Tokugawa shōguns, held senior government posts, influenced the philosophy of Zen swordsmanship, and produced one of history's most enduring samurai mysteries  a swordsman who vanished for twelve years and was never fully explained.</p>
+    </div>
+    <div class="philosophy-principles">
+      <div class="principle">
+        <div class="principle-kanji">影</div>
+        <div class="principle-content">
+          <div class="principle-title">Shinkage-ryū  New Shadow School</div>
+          <div class="principle-desc">Founded by Kamiizumi Nobutsuna and inherited by the Yagyū, the school emphasised adaptability, the life-giving sword, and mental mastery over brute technique.</div>
+        </div>
+      </div>
+      <div class="principle">
+        <div class="principle-kanji">無</div>
+        <div class="principle-content">
+          <div class="principle-title">Mutō-dori  No-Sword</div>
+          <div class="principle-desc">The Yagyū's defining technique: disarming or defeating an armed opponent using only bare hands. Munetoshi demonstrated this on Tokugawa Ieyasu himself.</div>
+        </div>
+      </div>
+      <div class="principle">
+        <div class="principle-kanji">禅</div>
+        <div class="principle-content">
+          <div class="principle-title">Zen & the Sword</div>
+          <div class="principle-desc">Munenori, guided by the monk Takuan Sōhō, wove Zen philosophy into the school  arguing that the empty mind was not just useful but essential to perfect swordsmanship.</div>
+        </div>
+      </div>
+      <div class="principle">
+        <div class="principle-kanji">活</div>
+        <div class="principle-content">
+          <div class="principle-title">Katsujin-ken  The Life-Giving Sword</div>
+          <div class="principle-desc">Against the era's prevailing "killing sword" philosophy, the Yagyū taught that mastery meant knowing when NOT to cut  the sword as an instrument of wisdom, not just death.</div>
+        </div>
+      </div>
+      <div class="principle">
+        <div class="principle-kanji">徳</div>
+        <div class="principle-content">
+          <div class="principle-title">Political Power</div>
+          <div class="principle-desc">Unlike most samurai schools, the Yagyū achieved daimyō status through the sword alone. Munenori rose to Inspector General  effectively the Shogunate's head of internal security.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h3 style="font-family:'Noto Serif JP',serif; font-size:1.3rem; font-weight:400; margin: 4rem 0 1.5rem; color:var(--ink);">The Four Generations at a Glance</h3>
+
+  <div class="lineage-flow">
+    <div class="lineage-node">
+      <span class="lineage-arrow">→</span>
+      <span class="lineage-gen">Origin · Generation 0</span>
+      <span class="lineage-kanji">上</span>
+      <span class="lineage-name">Kamiizumi Nobutsuna</span>
+      <span class="lineage-dates">c.1508 – c.1577 · Kōzuke Province</span>
+      <p class="lineage-desc">Founder of Shinkage-ryū. Not a Yagyū by blood but the origin of everything. Wandered Japan after the fall of his lord and passed his entire school to Munetoshi.</p>
+    </div>
+    <div class="lineage-node">
+      <span class="lineage-arrow">→</span>
+      <span class="lineage-gen">1st Generation</span>
+      <span class="lineage-kanji">宗</span>
+      <span class="lineage-name">Yagyū Munetoshi</span>
+      <span class="lineage-dates">1527 – 1606 · Yamato Province</span>
+      <p class="lineage-desc">The patriarch. Defeated by Kamiizumi, became his greatest student. Founded Yagyū Shinkage-ryū. Disarmed Tokugawa Ieyasu with bare hands at age 67.</p>
+    </div>
+    <div class="lineage-node">
+      <span class="lineage-arrow">→</span>
+      <span class="lineage-gen">2nd Generation</span>
+      <span class="lineage-kanji">矩</span>
+      <span class="lineage-name">Yagyū Munenori</span>
+      <span class="lineage-dates">1571 – 1646 · Edo</span>
+      <p class="lineage-desc">The political master. Sword instructor to three shōguns, minor daimyō, Inspector General of the Tokugawa Shogunate. Author of the Heihō Kadensho.</p>
+    </div>
+    <div class="lineage-node">
+      <span class="lineage-gen">3rd Generation</span>
+      <span class="lineage-kanji">三</span>
+      <span class="lineage-name">Yagyū Jūbei Mitsuyoshi</span>
+      <span class="lineage-dates">1607 – 1650 · Yagyū Village</span>
+      <p class="lineage-desc">The legend. Greatest swordsman of the clan. Disappeared for 12 years. Wore an eyepatch (maybe). Died at 43 under circumstances no one agrees on.</p>
+    </div>
+  </div>
+
+</section>
+
+<!-- PART II  MUNETOSHI -->
+<section id="munetoshi">
+  <div class="section-header">
+    <div class="section-number">二</div>
+    <div class="section-header-text">
+      <span class="section-tag">The Patriarch · 1527–1606</span>
+      <h2 class="section-title">Yagyū Munetoshi  Sekishūsai</h2>
+      <p class="section-subtitle">The man who was defeated, chose humility, and built an empire of the sword through that single act of surrender.</p>
+    </div>
+  </div>
+
+  <div class="philosophy-grid">
+    <div class="philosophy-text">
+      <p>Yagyū Munetoshi  known by his Buddhist name Sekishūsai, meaning "Stone Boat Master"  was born in 1527 in Yagyū Village, Yamato Province. His father, Ietoshi, was a minor lord, and the young Munetoshi learned warfare the hard way, fighting his first battle at the age of sixteen against the powerful Tsutsui clan, who attacked Yagyū Castle with ten thousand men. The Yagyū were outnumbered and defeated. For years afterward Munetoshi served whoever held power in the province, slowly building reputation as a swordsman even as his family's political standing remained precarious.</p>
+      <p>By the 1560s his skill had grown enough that when Kamiizumi Nobutsuna  the wandering founder of Shinkage-ryū  passed through the Yamato region and posted a challenge, Munetoshi was among those who answered. He was beaten three times, cleanly and completely, by the leather-wrapped bamboo sword that Kamiizumi had invented. Rather than walk away with his ego intact, Munetoshi dropped to his knees and asked to become his student.</p>
+      <p>Kamiizumi stayed at Yagyū Village for over a year. When he left for Kyoto, he gave Munetoshi a single piece of homework: research and master mutō-dori  the technique of facing an armed opponent while unarmed. Munetoshi spent years on this, and when Kamiizumi returned, he demonstrated his understanding so convincingly that Kamiizumi handed him the full transmission of Shinkage-ryū. A minor lord from a backwater village was now heir to one of Japan's greatest sword schools.</p>
+    </div>
+    <div class="philosophy-principles">
+      <div class="principle">
+        <div class="principle-kanji">石</div>
+        <div class="principle-content">
+          <div class="principle-title">The Ittō-seki Rock</div>
+          <div class="principle-desc">In Yagyū Village a large rock split clean in two stands on the grounds of Hōtoku-ji Temple. Legend says Munetoshi cut it with his sword. More likely it was split by lightning  but the legend persists. The rock still stands.</div>
+        </div>
+      </div>
+      <div class="principle">
+        <div class="principle-kanji">徒</div>
+        <div class="principle-content">
+          <div class="principle-title">The 1594 Demonstration</div>
+          <div class="principle-desc">Invited to perform before Tokugawa Ieyasu in Kyoto, Munetoshi  then 67 years old  demonstrated mutō-dori on the warlord himself, disarming him bare-handed. Ieyasu immediately offered him a position and stipend.</div>
+        </div>
+      </div>
+      <div class="principle">
+        <div class="principle-kanji">子</div>
+        <div class="principle-content">
+          <div class="principle-title">Passing the Torch</div>
+          <div class="principle-desc">Too old to serve, Munetoshi declined Ieyasu's offer and proposed his fifth son, Munenori, in his place. This single act of delegation secured the Yagyū family's fortune for the entire Edo period.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="brush" style="margin: 4rem 0;">
+
+  <h3 style="font-family:'Noto Serif JP',serif; font-size:1.5rem; font-weight:400; margin-bottom:3rem; color:var(--ink);">Life Chronicle  Munetoshi</h3>
+
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <span class="timeline-year">1527</span>
+      <div class="timeline-event">Born in Yagyū Village</div>
+      <div class="timeline-desc">Born Yagyū Shinsuke in Yamato Province, son of minor lord Ietoshi. The village of Yagyū, near modern Nara, would give the family its name and remain their ancestral home throughout history.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <span class="timeline-year">1544  Age 17</span>
+      <div class="timeline-event">First Battle  Siege of Yagyū Castle</div>
+      <div class="timeline-desc">The Tsutsui clan attacked Yagyū Castle with 10,000 men. The Yagyū were overwhelmed and Munetoshi was forced into the service of the Tsutsui. His long career of serving shifting masters  doing what he could to keep the family alive  began here.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <span class="timeline-year">1559</span>
+      <div class="timeline-event">Service Under Matsunaga Hisahide</div>
+      <div class="timeline-desc">When the powerful warlord Matsunaga Hisahide invaded Yamato, Munetoshi entered his service and became one of his principal generals. For eighteen years he served Hisahide as he allied with  and later betrayed  Oda Nobunaga.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <span class="timeline-year">1564</span>
+      <div class="timeline-event">Meeting Kamiizumi  The Defining Defeat</div>
+      <div class="timeline-desc">Kamiizumi Nobutsuna passed through the Nara region seeking challenges. Munetoshi accepted and was beaten three times with Kamiizumi's fukuro shinai. He dropped to his knees and asked to be accepted as a student. This moment of defeat-turned-humility became the founding act of the Yagyū sword lineage.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <span class="timeline-year">1565–1566</span>
+      <div class="timeline-event">Training Under Kamiizumi</div>
+      <div class="timeline-desc">Kamiizumi resided at Yagyū Village for over a year, transmitting Shinkage-ryū directly. When he departed, he assigned Munetoshi a task  master mutō-dori, the no-sword technique. Years of study followed before Kamiizumi returned to award Munetoshi the full menkyo kaiden  certificate of complete transmission. The Yagyū Shinkage-ryū was born.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <span class="timeline-year">1594</span>
+      <div class="timeline-event">The Demonstration Before Ieyasu</div>
+      <div class="timeline-desc">Invited to perform for Tokugawa Ieyasu in Kyoto, the 67-year-old Munetoshi demonstrated mutō-dori on the warlord himself  disarming and momentarily controlling the most powerful man in Japan with bare hands. Ieyasu, stunned, immediately offered Munetoshi a stipend of 200 koku and the title of official Tokugawa sword instructor. Munetoshi declined due to age and offered his son Munenori instead.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <span class="timeline-year">1600</span>
+      <div class="timeline-event">Battle of Sekigahara  The Family's Fortune</div>
+      <div class="timeline-desc">Though too old to fight himself, Munetoshi sent his son Munenori to serve Ieyasu at Sekigahara, Japan's defining battle. Ieyasu's victory made the Tokugawa the ruling dynasty. The Yagyū  already Ieyasu's sword instructors  had bet on the right horse. Their village and lands were restored to them and their future was secured.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <span class="timeline-year">1606</span>
+      <div class="timeline-event">Death in Yagyū Village</div>
+      <div class="timeline-desc">Munetoshi died at 79 in his ancestral village, having lived long enough to see the Yagyū transform from a struggling minor clan into the official sword instructors of Japan's ruling shogunate. His son Munenori built Hōtoku-ji Temple on the grounds of the old manor in his honour. The temple, and the legendary split rock nearby, stand to this day.</div>
+    </div>
+  </div>
+
+  <div class="pullquote">
+    "He who is skilled in attack flashes forth from the topmost heights of heaven, making it impossible for the enemy to guard against him. He who is skilled in defence hides in the most secret recesses of the earth, making it impossible for the enemy to estimate his position."
+    <cite> Principle of Yagyū Shinkage-ryū, attributed to the school's transmission scrolls</cite>
+  </div>
+
+</section>
+
+<!-- PART III  MUNENORI -->
+<section id="munenori" style="background: var(--paper-warm); max-width:none; padding: 8rem 4rem;">
+<div style="max-width:1200px; margin:0 auto;">
+
+  <div class="section-header">
+    <div class="section-number">三</div>
+    <div class="section-header-text">
+      <span class="section-tag">The Shogunate's Sword · 1571–1646</span>
+      <h2 class="section-title">Yagyū Munenori  Tajima no Kami</h2>
+      <p class="section-subtitle">Sword master, daimyō, Zen philosopher, intelligence chief  the man who made the Yagyū untouchable.</p>
+    </div>
+  </div>
+
+  <div class="novel-layout">
+    <div class="novel-text">
+      <p>Yagyū Tajima no Kami Munenori is one of the most fascinating figures of the early Edo period  a man whose power extended far beyond the sword. Born in 1571 as Munetoshi's fifth son, he was not originally the designated heir to the school. But circumstance  the wounding of his eldest brother in battle in 1571  left the path open, and Munenori proved to be the most politically gifted swordsman the Yagyū ever produced.</p>
+
+      <p>His career began with Sekigahara in 1600, where he served Tokugawa Ieyasu directly. The exact nature of his role is unrecorded  the rewards he received suggest they were considerable and possibly secret in nature. After Ieyasu's victory he was elevated to hatamoto (direct Tokugawa retainer) and formally appointed sword instructor to the shogunal family. He taught Ieyasu's son Hidetada, and then the third shōgun, Iemitsu  who had been Munenori's student since childhood and came to trust him deeply.</p>
+
+      <p>Under Iemitsu, Munenori rose beyond sword instructor. He was appointed ōmetsuke  Inspector General  effectively the head of all internal security and intelligence for the Shogunate. This made him, in modern terms, something like a combined Director of National Intelligence and chief of the secret police. The Yagyū swordsmanship school and the Shogunate's surveillance apparatus were, in his hands, intertwined.</p>
+
+      <div class="pullquote">
+        "The swordsman who has not yet left the realm of life and death is not a true master. One must achieve a state of mind in which both life and death are transcended."
+        <cite> Yagyū Munenori, Heihō Kadensho (A Hereditary Book on the Art of War), c. 1632</cite>
+      </div>
+
+      <p>The Heihō Kadensho, completed around 1632, is the most important text associated with the Yagyū school. Unlike the Gorin no Sho  which is a warrior's personal manual  the Kadensho is partly a philosophical treatise, partly a practical sword guide, and partly a meditation on governance. Munenori argued, under the influence of Zen monk Takuan Sōhō, that the qualities required to master the sword  empty mind, total awareness, absence of attachment  were identical to those required to govern wisely. The sword, in his framework, was not a tool of war but a mirror of the soul.</p>
+
+      <p>The school split after Munetoshi's death in 1606 into two branches. Munenori headed the Edo branch, which served the shōgun directly in the capital. His nephew Toshiyoshi headed the Owari branch in Nagoya, serving the Tokugawa cadet branch there. Both survive today  the Owari branch particularly intact, with the current headmaster Yagyū Kōichi as the 22nd-generation descendant of Munetoshi.</p>
+    </div>
+
+    <div class="book-visual">
+      <div class="book-cover">
+        <div class="book-cover-kanji">兵法</div>
+        <div class="book-cover-title">Heihō Kadensho</div>
+        <div class="book-cover-author">Yagyū Munenori</div>
+      </div>
+      <div class="book-info">
+        <div class="book-stat">
+          <span class="book-stat-label">Author</span>
+          <span class="book-stat-val">Yagyū Munenori</span>
+        </div>
+        <div class="book-stat">
+          <span class="book-stat-label">Written</span>
+          <span class="book-stat-val">c. 1632</span>
+        </div>
+        <div class="book-stat">
+          <span class="book-stat-label">Full Title</span>
+          <span class="book-stat-val">Heihō Kadensho</span>
+        </div>
+        <div class="book-stat">
+          <span class="book-stat-label">Meaning</span>
+          <span class="book-stat-val">Hereditary Book on the Art of War</span>
+        </div>
+        <div class="book-stat">
+          <span class="book-stat-label">Influence</span>
+          <span class="book-stat-val">Zen + Sword Philosophy</span>
+        </div>
+        <div class="book-stat">
+          <span class="book-stat-label">Still in Print</span>
+          <span class="book-stat-val">Japan, multiple editions</span>
+        </div>
+        <div class="book-stat">
+          <span class="book-stat-label">Position Held</span>
+          <span class="book-stat-val">Ōmetsuke · Inspector General</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="brush" style="margin: 4rem 0;">
+
+  <h3 style="font-family:'Noto Serif JP',serif; font-size:1.3rem; font-weight:400; margin-bottom:2rem; color:var(--ink);">Munenori's Key Achievements</h3>
+  <div class="duel-grid">
+    <div class="duel-card">
+      <div class="duel-num">03</div>
+      <div class="duel-name">Shōguns Instructed</div>
+      <span class="duel-year">Ieyasu · Hidetada · Iemitsu</span>
+      <p class="duel-desc">Munenori personally trained three generations of the Tokugawa dynasty in Yagyū Shinkage-ryū  an unprecedented position of trust and access to supreme power.</p>
+    </div>
+    <div class="duel-card">
+      <div class="duel-num">大</div>
+      <div class="duel-name">Daimyō Status</div>
+      <span class="duel-year">10,000 koku · Yagyū Domain</span>
+      <p class="duel-desc">Starting as a minor hatamoto, Munenori rose to minor daimyō  the only sword master in Japanese history to achieve full feudal lord status purely through the sword.</p>
+    </div>
+    <div class="duel-card">
+      <div class="duel-num">目</div>
+      <div class="duel-name">Ōmetsuke</div>
+      <span class="duel-year">Inspector General</span>
+      <p class="duel-desc">Appointed head of the Shogunate's entire internal security apparatus  in modern terms, a fusion of intelligence director and internal affairs chief. The sword school and the surveillance state were one.</p>
+    </div>
+    <div class="duel-card">
+      <div class="duel-num">禅</div>
+      <div class="duel-name">Takuan Sōhō</div>
+      <span class="duel-year">Zen Mentor · Friend</span>
+      <p class="duel-desc">The same Zen monk who appears in Yoshikawa's Musashi novel was Munenori's real philosophical guide. Takuan wrote the Fudōchi Shinmyōroku specifically for Munenori  it became a foundational text of Zen swordsmanship.</p>
+    </div>
+  </div>
+
+</div>
+</section>
+
+<!-- PART IV  JUBEI -->
+<section id="jubei">
+  <div class="section-header">
+    <div class="section-number">四</div>
+    <div class="section-header-text">
+      <span class="section-tag">The Mystery · 1607–1650</span>
+      <h2 class="section-title">Yagyū Jūbei Mitsuyoshi</h2>
+      <p class="section-subtitle">The greatest swordsman of his era. The man who disappeared for twelve years. Japan's most enduring samurai enigma.</p>
+    </div>
+  </div>
+
+  <div class="philosophy-grid">
+    <div class="philosophy-text">
+      <p>Yagyū Jūbei Mitsuyoshi was born in 1607, the eldest son of Munenori. His real given name was Shichirō. He grew up in a household at the apex of power  his father instructed the shōgun, his grandfather was a living legend  and by his early twenties he had surpassed every other Yagyū swordsman alive. By 1624, at just 17, he was already serving as an attendant in the court of the second Tokugawa Shōgun Hidetada. By his mid-twenties he was regarded as the finest blade the clan had ever produced.</p>
+      <p>And then he vanished. In 1631, Jūbei  now acknowledged as the best swordsman of the Yagyū  was dismissed from the shōgun's service. No one recorded why. The official clan chronicles, which contained detailed entries on almost every other family member, have almost nothing on Jūbei for the next twelve years. He simply does not appear in the historical record from 1631 to approximately 1643.</p>
+      <p>When he reappeared at age 36, he gave a demonstration of swordsmanship before the shōgun, was reinstated to government service, took control of his father's domains when Munenori died in 1646, and then died himself just four years later in 1650, aged 43, under circumstances no one can agree on. He left behind a swordsmanship treatise, two daughters, and an absence so complete it shaped centuries of Japanese fiction.</p>
+    </div>
+    <div class="philosophy-principles">
+      <div class="principle">
+        <div class="principle-kanji">月</div>
+        <div class="principle-content">
+          <div class="principle-title">Tsuki no Shō</div>
+          <div class="principle-desc">Jūbei's only surviving written work  "The Art of Looking at the Moon." A treatise on swordsmanship deeply influenced by his father's Zen philosophy and the teachings of Takuan Sōhō. Still studied today.</div>
+        </div>
+      </div>
+      <div class="principle">
+        <div class="principle-kanji">眼</div>
+        <div class="principle-content">
+          <div class="principle-title">The Eyepatch</div>
+          <div class="principle-desc">Legend says he lost his right eye  struck by his father during training, or by a thrown shuriken, or by sword practice. Contemporary portraits show him with two eyes. The eyepatch became his defining image in fiction regardless.</div>
+        </div>
+      </div>
+      <div class="principle">
+        <div class="principle-kanji">柳</div>
+        <div class="principle-content">
+          <div class="principle-title">The Yagyūzue</div>
+          <div class="principle-desc">Jūbei is credited with developing the yagyūzue  a reinforced lacquered bamboo staff that looked like an ordinary walking stick but could deflect sword blows and break bones. The perfect weapon for a man who preferred not to appear armed.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="brush" style="margin: 4rem 0;">
+
+  <h3 style="font-family:'Noto Serif JP',serif; font-size:1.5rem; font-weight:400; margin-bottom:3rem; color:var(--ink);">Life Chronicle  Jūbei</h3>
+
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <span class="timeline-year">1607</span>
+      <div class="timeline-event">Born in Yagyū no Sato</div>
+      <div class="timeline-desc">Born Shichirō, eldest son of Yagyū Munenori, in the family's ancestral village near Nara. His grandfather Munetoshi was still alive  one of history's great sword lineages was already three generations deep before Jūbei took his first steps.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <span class="timeline-year">1616  Age 9</span>
+      <div class="timeline-event">Enters the Shōgun's Court</div>
+      <div class="timeline-desc">At nine years old, Jūbei became an attendant in the court of the second Tokugawa Shōgun Hidetada, occasionally filling his father's role as sword instructor. He grew up inside the machinery of the Shogunate  childhood friend of the future third Shōgun, Iemitsu.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <span class="timeline-year">c.1624  Age 17</span>
+      <div class="timeline-event">Recognised as Greatest Yagyū Swordsman</div>
+      <div class="timeline-desc">Family records describe Jūbei at this age as having "already reached the pinnacle of Shinkage-ryū"  a remarkable statement given his father and grandfather's reputations. He became sword instructor to the third Shōgun Iemitsu, his childhood companion.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <span class="timeline-year">1631  Age 24</span>
+      <div class="timeline-event">Dismissed  The Disappearance Begins</div>
+      <div class="timeline-desc">Jūbei was summarily dismissed from the Shōgun's service. No reason appears in any surviving document. Theories: he insulted or struck the Shōgun during training, he chose to leave for a warrior's pilgrimage, he was sent on covert operations, or his father expelled him due to an unrecorded personal conflict. His name vanishes from history for twelve years.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <span class="timeline-year">1631–1643</span>
+      <div class="timeline-event">The Twelve Lost Years</div>
+      <div class="timeline-desc">Twelve years of absolute historical silence. Even the Yagyū clan's secret internal chronicles  which document almost every other family member in detail  have nothing on Jūbei during this period. Folktales from regions across Japan later placed him in their areas, suggesting he wandered widely. Whether as ronin, spy, or pilgrim, no one living or dead can say with certainty.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <span class="timeline-year">c.1643  Age 36</span>
+      <div class="timeline-event">The Return</div>
+      <div class="timeline-desc">Jūbei reappeared and gave a swordsmanship demonstration before the Shōgun. He was reinstated to government service as a Gosho Inban  a government inspector. No explanation was given for his absence. No one appears to have asked  or if they did, the record does not show it.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <span class="timeline-year">1646</span>
+      <div class="timeline-event">Father's Death  Controls the Domain</div>
+      <div class="timeline-desc">Yagyū Munenori died, and Jūbei took control of the family's landholdings. He had just four years left. He spent some of this period writing the Tsuki no Shō  his only surviving philosophical and swordsmanship text.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <span class="timeline-year">April 21, 1650  Age 43</span>
+      <div class="timeline-event">Death  Circumstances Unknown</div>
+      <div class="timeline-desc">Jūbei died in a small village near his birthplace. The cause is disputed: heart attack, drowning, an accident during falcon hunting, assassination by his half-brother's attendants. He was buried beside his grandfather Munetoshi. He was given the Buddhist posthumous name Sohgo. His younger brother Munefuyu succeeded him as head of the Edo Yagyū branch.</div>
+    </div>
+  </div>
+
+  <!-- THE MYSTERY BLOCK -->
+  <div class="mystery-block">
+    <div class="mystery-title">The Twelve Years  What Really Happened?</div>
+    <p style="font-size:0.92rem; color:rgba(245,240,232,0.6); line-height:1.85; max-width:700px;">No historical record explains Jūbei's twelve-year absence. Four major theories have circulated since his death, each with circumstantial support and none with proof.</p>
+    <div class="mystery-theories">
+      <div class="theory">
+        <span class="theory-label">Theory One</span>
+        <p class="theory-text">Warrior's pilgrimage  musha shugyō. He left the court to travel Japan challenging swordsmen, as tradition demanded, and the silence was simply the absence of official records for an unofficial journey.</p>
+      </div>
+      <div class="theory">
+        <span class="theory-label">Theory Two</span>
+        <p class="theory-text">Shogunal spy. Given his father's role as Inspector General, Jūbei was sent on covert intelligence operations  the dismissal was cover. His reinstatement with no explanation supports this: people don't ask a spy where he's been.</p>
+      </div>
+      <div class="theory">
+        <span class="theory-label">Theory Three</span>
+        <p class="theory-text">Personal exile. His father expelled him due to an unknown conflict between them  possibly Jūbei struck the Shōgun during training, an act that would embarrass the family politically and require the son's removal.</p>
+      </div>
+      <div class="theory">
+        <span class="theory-label">Theory Four</span>
+        <p class="theory-text">He simply trained. Some historians argue he remained at a private dojo, devoted to swordsmanship, and the dramatic absence from records reflects how thoroughly unofficial his life was  not conspiracy, just solitude.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- EYEPATCH DEBATE -->
+  <h3 style="font-family:'Noto Serif JP',serif; font-size:1.3rem; font-weight:400; margin: 3rem 0 1.5rem; color:var(--ink);">The Eyepatch  Fact or Fiction?</h3>
+  <div class="debate-block">
+    <div class="debate-side">
+      <span class="debate-label">The Legend</span>
+      <div class="debate-stance">He wore it. His father blinded him.</div>
+      <p class="debate-text">The most persistent account says Munenori struck Jūbei in the right eye with a real sword during training  either deliberately to test him or accidentally during a practice cut. Jūbei fashioned a makeshift patch from a sword guard with leather strapped through it. The image became iconic.</p>
+    </div>
+    <div class="debate-side">
+      <span class="debate-label">The Record</span>
+      <div class="debate-stance">No contemporary evidence.</div>
+      <p class="debate-text">Every portrait made of Jūbei during his lifetime shows him with two functioning eyes. Historian Watatani Kiyoshi concluded that the eyepatch story was invented after his death to dramatise a life that had plenty of genuine mystery already. The legends were written long after the facts ran out.</p>
+    </div>
+  </div>
+
+</section>
+
+<!-- PART V  VAGABOND -->
+<section id="vagabond" class="section-full band" style="padding:0;">
+<div style="max-width:1200px; margin:0 auto; padding:8rem 4rem;">
+
+  <div class="section-header">
+    <div class="section-number">五</div>
+    <div class="section-header-text">
+      <span class="section-tag">Inoue Takehiko · Vagabond · 1998–2015</span>
+      <h2 class="section-title">The Yagyū in Vagabond</h2>
+      <p class="section-subtitle">How Inoue Takehiko used the Yagyū  especially Munenori and the school itself  as the philosophical dark mirror to Musashi's journey.</p>
+    </div>
+  </div>
+   <style>
+     .manga-hero {
+       display: block;
+       width: clamp(320px, 60vw, 560px);
+       height: auto;
+       margin: 2rem auto;
+       border-radius: 1rem;
+       transition: transform 0.3s ease, box-shadow 0.3s ease;
+     
+     }
+   </style>
+   <img class="manga-hero" src="yagyutwo_waifu2x_art_noise0_scale-Picsart-BackgroundRemover.png" alt="Yagyū illustration">
+  <div class="manga-intro">
+    <div class="manga-title-block">
+      <span class="manga-title-jp">バガボンド</span>
+      <p class="manga-by">By Inoue Takehiko · Yagyū as Institutional Power</p>
+      <div class="manga-awards">
+        <span class="award-badge">Kodansha Manga Award</span>
+        <span class="award-badge">Tezuka Osamu Cultural Prize</span>
+        <span class="award-badge">37 Volumes · 82M+ Copies</span>
+      </div>
+    </div>
+    <div class="manga-visual">
+      <div class="manga-volume mv-3">柳</div>
+      <div class="manga-volume mv-5">生</div>
+      <div class="manga-volume mv-7">宗</div>
+      <div class="manga-volume mv-9">矩</div>
+      <div class="manga-volume mv-10">流</div>
+    </div>
+  </div>
+
+  <div class="manga-text">
+    <p>In Vagabond, the Yagyū are not simply a sword school  they are the embodiment of what Musashi is not. Where Musashi wanders, hungers, bleeds, questions and doubts, the Yagyū are established, powerful, philosophical, and already arrived. Inoue uses them as a structural counterweight to everything the protagonist represents  the institution against the individual, the perfected against the still-becoming.</p>
+    <p>Munenori appears as one of the most complex presences in the manga. Inoue's rendering of him draws heavily on the historical record  the Zen philosophy, the political intelligence, the dual role as swordsman and power broker. But Inoue adds psychological texture: Munenori as a man who has integrated the sword so completely into his identity that he cannot easily be read. When Musashi and Munenori's worlds briefly intersect, it is less a duel and more a collision of worldviews  the raw against the refined.</p>
+  </div>
+
+  <div class="appearance-grid">
+    <div class="appearance-card">
+      <span class="appearance-vol">Early Volumes  Background Presence</span>
+      <div class="appearance-title">The Yagyū as Reputation</div>
+      <p class="appearance-desc">Before any Yagyū appears directly, their name moves through the story as a measure of greatness. Other swordsmen reference them. Their school is discussed as the gold standard. Inoue establishes the Yagyū as an institution Musashi is inevitably moving toward  not to join, but to test himself against.</p>
+    </div>
+    <div class="appearance-card">
+      <span class="appearance-vol">Mid-Series  Yagyū Dojo Arc</span>
+      <div class="appearance-title">Musashi Enters Yagyū Territory</div>
+      <p class="appearance-desc">Musashi's encounter with Yagyū-trained swordsmen is one of Vagabond's most sustained arcs. Inoue uses the school's practitioners as a gauntlet  technically superior, philosophically grounded, and yet something Musashi's raw instinct keeps finding the edge of. The fights are among the manga's most intricate.</p>
+    </div>
+    <div class="appearance-card">
+      <span class="appearance-vol">Munenori  Direct Confrontation</span>
+      <div class="appearance-title">The Established vs. The Searching</div>
+      <p class="appearance-desc">Munenori in Vagabond is portrayed as a man who has already completed the journey Musashi is still walking. He is calm, unreadable, politically embedded, and carries none of Musashi's visible torment. Inoue poses an uncomfortable question: is Munenori's serenity genuine mastery  or the serenity of a man who traded his soul for power?</p>
+    </div>
+    <div class="appearance-card">
+      <span class="appearance-vol">Philosophy  Katsujin-ken</span>
+      <div class="appearance-title">The Life-Giving Sword</div>
+      <p class="appearance-desc">Inoue uses the Yagyū's katsujin-ken philosophy  "the sword that gives life"  as a genuine counterargument to the carnage Musashi leaves behind. In the manga it becomes an ongoing theological debate: is a sword that kills for enlightenment fundamentally different from one that kills for glory? The Yagyū say yes. Musashi isn't sure.</p>
+    </div>
+    <div class="appearance-card">
+      <span class="appearance-vol">Visual Treatment</span>
+      <div class="appearance-title">Inoue's Brushwork on the Yagyū</div>
+      <p class="appearance-desc">The Yagyū sequences in Vagabond carry a noticeably different visual tone  more architectural, more controlled. Where Musashi's chapters sprawl with energy and brushwork chaos, the Yagyū pages are composed, structured. Even the drawing style reflects the contrast Inoue is building between instinct and institution.</p>
+    </div>
+    <div class="appearance-card">
+      <span class="appearance-vol">The Larger Argument</span>
+      <div class="appearance-title">What the Yagyū Represent in the Narrative</div>
+      <p class="appearance-desc">By placing the Yagyū as the endpoint of formal swordsmanship  politically connected, philosophically complete, technically unassailable  Inoue creates a destination Musashi can never simply arrive at. The Yagyū represent the idea that mastery can be institutionalised. Musashi's entire arc is the argument that it cannot.</p>
+    </div>
+  </div>
+
+  <div class="pullquote">
+    "It is said that the Yagyū do not fight to kill. It is also said that no one who has fought them has survived to confirm this."
+    <cite> Paraphrase of the school's reputation in Vagabond's world</cite>
+  </div>
+
+</div>
+</section>
+
+<!-- WIDE QUOTE -->
+<div class="wide-quote">
+  <p class="wide-quote-text">"The ultimate secret of the sword is to be without the sword. The body becomes the sword, the mind becomes the sword, and the intention becomes the cut  before the hand has moved."</p>
+  <p class="wide-quote-attr">Yagyū Shinkage-ryū  School Principle, attributed to Munetoshi's transmission</p>
+</div>
+
+<!-- COMPARE TABLE -->
+<div class="compare-section" id="compare">
+  <div class="compare-inner">
+    <div class="section-header">
+      <div class="section-number" style="color:rgba(26,23,20,0.06);">六</div>
+      <div class="section-header-text">
+        <span class="section-tag">Four Perspectives</span>
+        <h2 class="section-title">The Three Yagyū  Real vs. Legend</h2>
+        <p class="section-subtitle">How history, the historical record, and Vagabond each render the three major Yagyū figures differently.</p>
+      </div>
+    </div>
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th></th>
+          <th>Yagyū Munetoshi</th>
+          <th>Yagyū Munenori</th>
+          <th>Yagyū Jūbei</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Dates</td>
+          <td>1527 – 1606</td>
+          <td>1571 – 1646</td>
+          <td>1607 – 1650</td>
+        </tr>
+        <tr>
+          <td>Historical Role</td>
+          <td>Founder of Yagyū Shinkage-ryū. Received the school from Kamiizumi. Demonstrated mutō-dori on Tokugawa Ieyasu.</td>
+          <td>Sword instructor to three shōguns, daimyō, Inspector General. Author of Heihō Kadensho. The school's political architect.</td>
+          <td>Greatest swordsman of the clan. Dismissed for unknown reasons. Disappeared 12 years. Died at 43 under disputed circumstances.</td>
+        </tr>
+        <tr>
+          <td>Primary Achievement</td>
+          <td>Transformed a minor clan into the custodians of Japan's greatest sword school through humility and mastery.</td>
+          <td>Made Yagyū Shinkage-ryū the official school of the ruling dynasty while simultaneously running its intelligence apparatus.</td>
+          <td>Wrote the Tsuki no Shō. Became Japan's most mythologised samurai figure  primarily because no one knows what he did.</td>
+        </tr>
+        <tr>
+          <td>In Vagabond</td>
+          <td>Referenced as the origin figure the humility of his defeat by Kamiizumi used as philosophical counterpoint to Musashi's ego.</td>
+          <td>Depicted as the institutionalised master calm, complete, politically embedded. The dark mirror to Musashi's restless searching.</td>
+          <td>Less prominent in the manga itself, but the school he represents undefeated, philosophically complete is Musashi's implied destination.</td>
+        </tr>
+        <tr>
+          <td>In Popular Fiction</td>
+          <td>Appears in historical dramas and novels as the wise patriarch, often played as an elder sage figure.</td>
+          <td>Appears frequently in Edo-period dramas the spy-master swordsman, the man who knows everything and shows nothing.</td>
+          <td>The most depicted. Dozens of films, TV series, novels, manga, anime, video games. Usually one-eyed, usually mysterious, always lethal.</td>
+        </tr>
+        <tr>
+          <td>Legacy</td>
+          <td>Yagyū Shinkage-ryū survives today the Owari branch under Yagyū Kōichi, 22nd-generation headmaster. The temple and split rock in Yagyū Village still draw visitors.</td>
+          <td>Heihō Kadensho remains in print. His fusion of Zen philosophy and swordsmanship directly influenced modern kendō ethics and Japanese martial philosophy broadly.</td>
+          <td>His mystery generated more Japanese fiction than almost any other historical figure. The twelve years are still unresolved. His eyepatch is still debated. He remains unexplained.</td>
+        </tr>
+        <tr>
+          <td>Central Question</td>
+          <td>What does it mean to be defeated and emerge greater for it?</td>
+          <td>Can the sword serve righteousness when it is also the instrument of political power?</td>
+          <td>What happened to him? Where did he go? Who was he when no one was watching?</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-kanji">柳 影 無 月 剣</span>
+  <p class="footer-title">The Yagyū Clan  Four Generations of the Shadow School</p>
+  <p class="footer-sub">Kamiizumi · Munetoshi · Munenori · Jūbei</p>
+  <div style="margin-top:2rem; font-family:'Noto Sans JP',sans-serif; font-size:0.65rem; letter-spacing:0.15em; opacity:0.4;">
+    Part of the Samurai Hub · <a href="index.html" style="color:inherit;">← Return to Hub</a>
+  </div>
+</footer>
+
+<script>
+  // Timeline reveal
+  const items = document.querySelectorAll('.timeline-item');
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  items.forEach(i => obs.observe(i));
+
+  // Lineage node stagger
+  const nodes = document.querySelectorAll('.lineage-node');
+  const nodeObs = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => {
+          e.target.style.opacity = '1';
+          e.target.style.transform = 'translateY(0)';
+        }, i * 120);
+        nodeObs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  nodes.forEach(n => {
+    n.style.opacity = '0';
+    n.style.transform = 'translateY(16px)';
+    n.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+    nodeObs.observe(n);
+  });
+
+  // Nav active state
+  const scrollObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        document.querySelectorAll('.nav-links a').forEach(l => l.style.color = '');
+        const link = document.querySelector(`.nav-links a[href="#${e.target.id}"]`);
+        if (link) link.style.color = 'var(--ink)';
+      }
+    });
+  }, { rootMargin: '-40% 0px -55% 0px' });
+  document.querySelectorAll('#lineage, #munetoshi, #munenori, #jubei, #vagabond, #compare')
+    .forEach(s => scrollObs.observe(s));
+
+  // Appearance card reveal
+  const cards = document.querySelectorAll('.appearance-card, .theory, .duel-card');
+  const cardObs = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.style.opacity = '1', i * 80);
+        cardObs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  cards.forEach(c => {
+    c.style.opacity = '0';
+    c.style.transition = 'opacity 0.5s ease';
+    cardObs.observe(c);
+  });
+</script>
+</body>
+</html>
